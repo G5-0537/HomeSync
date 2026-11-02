@@ -1,0 +1,30 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Property images: publicly readable, landlords upload
+    match /properties/{propertyId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Receipts: readable by household members, uploadable by authenticated user
+    match /receipts/{householdId}/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Rental agreement PDFs
+    match /agreements/{agreementId}/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Maintenance damage photos
+    match /maintenance/{householdId}/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Property inspection photos
+    match /inspections/{householdId}/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
